@@ -34,7 +34,9 @@ namespace TrackMe
             {
                 jsonPacket.Append("{\"id\":\"S6\",");
                 jsonPacket.Append("\"position\":[");
-                jsonPacket.AppendFormat(ci,"{0},{1},{2}]", _currentLocation.Latitude, _currentLocation.Longitude, _currentLocation.Altitude);
+                jsonPacket.AppendFormat(ci, "{0},{1},{2}],", _currentLocation.Latitude, _currentLocation.Longitude, _currentLocation.Altitude);
+                jsonPacket.AppendFormat(ci, "\"accuracy\":{0},", _currentLocation.Accuracy);
+                jsonPacket.AppendFormat(ci, "\"provider\":{0}}}", _currentLocation.Provider);
                 _locationText.Text = jsonPacket.ToString();
             }
         }
