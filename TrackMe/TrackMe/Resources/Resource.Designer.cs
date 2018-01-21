@@ -44,14 +44,20 @@ namespace TrackMe
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int connectWebSocket = 2130968577;
-			
-			// aapt resource value: 0x7f040002
-			public const int locationTextView = 2130968578;
+			// aapt resource value: 0x7f040003
+			public const int connectWebSocket = 2130968579;
 			
 			// aapt resource value: 0x7f040000
-			public const int webSocketIP = 2130968576;
+			public const int linearLayout1 = 2130968576;
+			
+			// aapt resource value: 0x7f040004
+			public const int locationTextView = 2130968580;
+			
+			// aapt resource value: 0x7f040001
+			public const int textView1 = 2130968577;
+			
+			// aapt resource value: 0x7f040002
+			public const int webSocketIP = 2130968578;
 			
 			static Id()
 			{
@@ -90,6 +96,9 @@ namespace TrackMe
 			
 			// aapt resource value: 0x7f030002
 			public const int connect_default = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int ip_default = 2130903043;
 			
 			static String()
 			{

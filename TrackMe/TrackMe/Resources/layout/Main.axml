@@ -5,23 +5,32 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-    <TextView
-        android:text="https://africanplanes.ddns.net/"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/webSocketIP"
-        android:editable="true"
-        android:enabled="true"
-        android:clickable="true" />
-    <Button
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="@string/ip_default"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView1"
+            android:textAlignment="center"
+            android:gravity="center" />
+        <EditText
+            android:id="@+id/webSocketIP"
+            android:text="https://africanplanes.ddns.net/"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <Button xmlns:tools="http://schemas.android.com/tools"
         android:text="@string/connect_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/connectWebSocket"
         android:clickable="true"
         android:enabled="true"
-        xmlns:tools="http://schemas.android.com/tools"
         tools:visibility="visible"
         android:visibility="visible"
         android:contextClickable="true" />

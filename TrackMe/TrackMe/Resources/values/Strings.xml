@@ -3,4 +3,5 @@
   <string name="app_name">TrackMe</string>
   <string name="address_default">Waiting for GPS</string>
   <string name="connect_default">Connect...</string>
+  <string name="ip_default">Address: </string>
 </resources>
