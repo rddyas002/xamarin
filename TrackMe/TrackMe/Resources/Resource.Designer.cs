@@ -41,6 +41,22 @@ namespace TrackMe
 			}
 		}
 		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int locationTextView = 2130968576;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
+			{
+			}
+		}
+		
 		public partial class Layout
 		{
 			
@@ -59,6 +75,9 @@ namespace TrackMe
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f030001
+			public const int address_default = 2130903041;
 			
 			// aapt resource value: 0x7f030000
 			public const int app_name = 2130903040;
