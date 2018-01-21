@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Android.Util;
+using System.Text;
+using System.Globalization;
 
 namespace TrackMe
 {
@@ -18,9 +20,11 @@ namespace TrackMe
         LocationManager _locationManager;
         string _locationProvider;
         TextView _locationText;
+        static CultureInfo ci = new CultureInfo("en-GB", true);
 
         public void OnLocationChanged(Location location)
         {
+            StringBuilder jsonPacket = new StringBuilder();
             _currentLocation = location;
             if (_currentLocation == null)
             {
@@ -28,7 +32,10 @@ namespace TrackMe
             }
             else
             {
-                _locationText.Text = string.Format("{0:f6},{1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
+                jsonPacket.Append("{\"id\":\"S6\",");
+                jsonPacket.Append("\"position\":[");
+                jsonPacket.AppendFormat(ci,"{0},{1},{2}]", _currentLocation.Latitude, _currentLocation.Longitude, _currentLocation.Altitude);
+                _locationText.Text = jsonPacket.ToString();
             }
         }
 
@@ -53,7 +60,7 @@ namespace TrackMe
             SetContentView(Resource.Layout.Main);
 
             _locationText = FindViewById<TextView>(Resource.Id.locationTextView);
-            _locationText.Text = "Waiting for GPS...";
+            _locationText.Text = "Waiting for GPS";
 
             InitializeLocationManager();
         }
