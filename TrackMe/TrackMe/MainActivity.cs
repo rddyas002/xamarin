@@ -9,6 +9,8 @@ using System.Linq;
 using Android.Util;
 using System.Text;
 using System.Globalization;
+using static Android.Views.View;
+using Android.Views;
 
 namespace TrackMe
 {
@@ -65,6 +67,19 @@ namespace TrackMe
             _locationText.Text = "Waiting for GPS";
 
             InitializeLocationManager();
+
+            Button connectButton = FindViewById<Button>(Resource.Id.connectWebSocket);
+            //Assign The Event To Button
+            connectButton.Click += delegate {
+
+                //Call Your Method When User Clicks The Button
+                btnConnectClicked();
+            };
+        }
+
+        public void btnConnectClicked()
+        {
+            Toast.MakeText(this, "Connect clicked", ToastLength.Long).Show();
         }
 
         void InitializeLocationManager()

@@ -2,4 +2,5 @@
 <resources>
   <string name="app_name">TrackMe</string>
   <string name="address_default">Waiting for GPS</string>
+  <string name="connect_default">Connect...</string>
 </resources>
