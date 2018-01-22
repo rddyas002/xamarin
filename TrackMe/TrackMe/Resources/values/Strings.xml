@@ -4,4 +4,9 @@
   <string name="address_default">Waiting for GPS</string>
   <string name="connect_default">Connect...</string>
   <string name="ip_default">Address: </string>
+  <string name="lblTimestamp">Timestamp: </string>
+  <string name="lblLatitude">Latitude: </string>
+  <string name="lblLongitude">Longitude: </string>
+  <string name="lblAltitude">Altitude: </string>
+  <string name="lblProvider">Provider: </string>
 </resources>

@@ -51,10 +51,31 @@ namespace TrackMe
 			public const int linearLayout1 = 2130968576;
 			
 			// aapt resource value: 0x7f040004
-			public const int locationTextView = 2130968580;
+			public const int linearLayout2 = 2130968580;
+			
+			// aapt resource value: 0x7f04000b
+			public const int locationTextView = 2130968587;
 			
 			// aapt resource value: 0x7f040001
 			public const int textView1 = 2130968577;
+			
+			// aapt resource value: 0x7f040005
+			public const int textView2 = 2130968581;
+			
+			// aapt resource value: 0x7f040009
+			public const int txtAltitude = 2130968585;
+			
+			// aapt resource value: 0x7f040007
+			public const int txtLatitude = 2130968583;
+			
+			// aapt resource value: 0x7f040008
+			public const int txtLongitude = 2130968584;
+			
+			// aapt resource value: 0x7f04000a
+			public const int txtProvider = 2130968586;
+			
+			// aapt resource value: 0x7f040006
+			public const int txtTimestamp = 2130968582;
 			
 			// aapt resource value: 0x7f040002
 			public const int webSocketIP = 2130968578;
@@ -99,6 +120,21 @@ namespace TrackMe
 			
 			// aapt resource value: 0x7f030003
 			public const int ip_default = 2130903043;
+			
+			// aapt resource value: 0x7f030007
+			public const int lblAltitude = 2130903047;
+			
+			// aapt resource value: 0x7f030005
+			public const int lblLatitude = 2130903045;
+			
+			// aapt resource value: 0x7f030006
+			public const int lblLongitude = 2130903046;
+			
+			// aapt resource value: 0x7f030008
+			public const int lblProvider = 2130903048;
+			
+			// aapt resource value: 0x7f030004
+			public const int lblTimestamp = 2130903044;
 			
 			static String()
 			{

@@ -25,9 +25,6 @@ namespace TrackMe
         public MQTT(String ip_address, int host)
         {
             setupAsync(ip_address, host);
-            //var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes(jsonPacket.ToString()));
-            //await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
-            //await client.DisconnectAsync();
         }
 
         private async void setupAsync(String ip_address, int host)
