@@ -25,6 +25,8 @@ namespace TrackMe
         string _locationProvider;
         TextView _locationText;
         static CultureInfo ci = new CultureInfo("en-GB", true);
+        MqttConfiguration config = new MqttConfiguration { Port = 1883 };
+        private int count = 0;
 
         public void OnLocationChanged(Location location)
         {
@@ -42,6 +44,8 @@ namespace TrackMe
                 jsonPacket.AppendFormat(ci, "\"accuracy\":{0},", _currentLocation.Accuracy);
                 jsonPacket.AppendFormat(ci, "\"provider\":{0}}}", _currentLocation.Provider);
                 _locationText.Text = jsonPacket.ToString();
+                if (count++ == 0)
+                    sendMqttDataAsync(jsonPacket);
             }
         }
 
@@ -77,13 +81,24 @@ namespace TrackMe
                 //Call Your Method When User Clicks The Button
                 btnConnectClicked();
             };
+            
+        }
+
+        private async void sendMqttDataAsync(StringBuilder jsonPacket)
+        {
+            var client = await MqttClient.CreateAsync("104.196.195.27", 1883);
+            await client.ConnectAsync(new MqttClientCredentials("testClient", "yashren", "mqtt"));
+            await client.SubscribeAsync("test", MqttQualityOfService.AtMostOnce);
+            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes(jsonPacket.ToString()));
+            await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
+            await client.DisconnectAsync();
         }
 
         public async void btnConnectClicked()
         {
             Toast.MakeText(this, "Connect clicked", ToastLength.Long).Show();
-            var configuration = new MqttConfiguration { Port = 1883 };
-            var client = await MqttClient.CreateAsync("tcp://104.196.195.27", configuration);
+            //var configuration = new MqttConfiguration { Port = 1883 };
+            var client = await MqttClient.CreateAsync("104.196.195.27", 1883);
             await client.ConnectAsync(new MqttClientCredentials("testClient", "yashren", "mqtt"));
             await client.SubscribeAsync("test", MqttQualityOfService.AtMostOnce);
 /*
@@ -96,8 +111,9 @@ namespace TrackMe
                 Console.WriteLine($"Message received in topic {msg.Topic}");
             });
             */
-            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes("Test String  Message"));
+            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes("Test String Message 123456"));
             await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
+            await client.DisconnectAsync();
         }
 
         void InitializeLocationManager()
