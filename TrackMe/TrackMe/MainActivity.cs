@@ -11,6 +11,8 @@ using System.Text;
 using System.Globalization;
 using static Android.Views.View;
 using Android.Views;
+using System.Net.Mqtt;
+using System.Reactive.Linq;
 
 namespace TrackMe
 {
@@ -77,9 +79,25 @@ namespace TrackMe
             };
         }
 
-        public void btnConnectClicked()
+        public async void btnConnectClicked()
         {
             Toast.MakeText(this, "Connect clicked", ToastLength.Long).Show();
+            var configuration = new MqttConfiguration { Port = 1883 };
+            var client = await MqttClient.CreateAsync("tcp://104.196.195.27", configuration);
+            await client.ConnectAsync(new MqttClientCredentials("testClient", "yashren", "mqtt"));
+            await client.SubscribeAsync("test", MqttQualityOfService.AtMostOnce);
+/*
+ *          client.MessageStream.Subscribe(msg =>
+            {
+                //All the messages from the Broker to any subscribed topic will get here
+                //The MessageStream is an Rx Observable, so you can filter the messages by topic with Linq to Rx
+                //The message object has Topic and Payload properties. The Payload is a byte[] that you need to deserialize 
+                //depending on the type of the message
+                Console.WriteLine($"Message received in topic {msg.Topic}");
+            });
+            */
+            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes("Test String  Message"));
+            await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
         }
 
         void InitializeLocationManager()
