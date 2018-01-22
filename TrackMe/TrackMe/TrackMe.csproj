@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MQTT.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,7 +96,9 @@
     <AndroidResource Include="Resources\layout\Main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\values\Strings.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

@@ -25,8 +25,8 @@ namespace TrackMe
         string _locationProvider;
         TextView _locationText;
         static CultureInfo ci = new CultureInfo("en-GB", true);
-        MqttConfiguration config = new MqttConfiguration { Port = 1883 };
         private int count = 0;
+        MQTT mqttClient = new MQTT("104.196.195.27", 1883);
 
         public void OnLocationChanged(Location location)
         {
@@ -45,7 +45,7 @@ namespace TrackMe
                 jsonPacket.AppendFormat(ci, "\"provider\":{0}}}", _currentLocation.Provider);
                 _locationText.Text = jsonPacket.ToString();
                 if (count++ == 0)
-                    sendMqttDataAsync(jsonPacket);
+                    mqttClient.MQTT_sendAsync(jsonPacket.ToString());
             }
         }
 
@@ -82,16 +82,6 @@ namespace TrackMe
                 btnConnectClicked();
             };
             
-        }
-
-        private async void sendMqttDataAsync(StringBuilder jsonPacket)
-        {
-            var client = await MqttClient.CreateAsync("104.196.195.27", 1883);
-            await client.ConnectAsync(new MqttClientCredentials("testClient", "yashren", "mqtt"));
-            await client.SubscribeAsync("test", MqttQualityOfService.AtMostOnce);
-            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes(jsonPacket.ToString()));
-            await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
-            await client.DisconnectAsync();
         }
 
         public async void btnConnectClicked()
