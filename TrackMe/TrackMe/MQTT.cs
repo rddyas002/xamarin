@@ -24,12 +24,17 @@ namespace TrackMe
 
         public MQTT(String ip_address, int host)
         {
-            client = (IMqttClient) MqttClient.CreateAsync(ip_address, host);
-            client.ConnectAsync(new MqttClientCredentials(MQTT_client_ID, "yashren", "mqtt"));
-            client.SubscribeAsync(MQTT_topic, MqttQualityOfService.AtMostOnce);
+            setupAsync(ip_address, host);
             //var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes(jsonPacket.ToString()));
             //await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
             //await client.DisconnectAsync();
+        }
+
+        private async void setupAsync(String ip_address, int host)
+        {
+            client = await MqttClient.CreateAsync(ip_address, host);
+            await client.ConnectAsync(new MqttClientCredentials(MQTT_client_ID, "yashren", "mqtt"));
+            await client.SubscribeAsync(MQTT_topic, MqttQualityOfService.AtMostOnce);
         }
 
         public async void MQTT_sendAsync(String data)

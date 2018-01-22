@@ -26,9 +26,10 @@ namespace TrackMe
         TextView _locationText;
         static CultureInfo ci = new CultureInfo("en-GB", true);
         private int count = 0;
-        MQTT mqttClient = new MQTT("104.196.195.27", 1883);
+        private IMqttClient client;
 
-        public void OnLocationChanged(Location location)
+
+        public async void OnLocationChanged(Location location)
         {
             StringBuilder jsonPacket = new StringBuilder();
             _currentLocation = location;
@@ -44,8 +45,11 @@ namespace TrackMe
                 jsonPacket.AppendFormat(ci, "\"accuracy\":{0},", _currentLocation.Accuracy);
                 jsonPacket.AppendFormat(ci, "\"provider\":{0}}}", _currentLocation.Provider);
                 _locationText.Text = jsonPacket.ToString();
-                if (count++ == 0)
-                    mqttClient.MQTT_sendAsync(jsonPacket.ToString());
+                if (client.IsConnected)
+                {
+                    var message = new MqttApplicationMessage("TrackMe", Encoding.UTF8.GetBytes(jsonPacket.ToString()));
+                    await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
+                }
             }
         }
 
@@ -64,7 +68,7 @@ namespace TrackMe
             
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Main);
@@ -81,29 +85,31 @@ namespace TrackMe
                 //Call Your Method When User Clicks The Button
                 btnConnectClicked();
             };
-            
+
+            //var configuration = new MqttConfiguration { Port = 1883 };
+            client = await MqttClient.CreateAsync("104.196.195.27", 1883);
+            await client.ConnectAsync(new MqttClientCredentials("Android", "yashren", "mqtt"));
+            await client.SubscribeAsync("TrackMe", MqttQualityOfService.AtMostOnce);
+            Toast.MakeText(this, "MQTT connection successful", ToastLength.Long).Show();
+
         }
 
         public async void btnConnectClicked()
         {
-            Toast.MakeText(this, "Connect clicked", ToastLength.Long).Show();
-            //var configuration = new MqttConfiguration { Port = 1883 };
-            var client = await MqttClient.CreateAsync("104.196.195.27", 1883);
-            await client.ConnectAsync(new MqttClientCredentials("testClient", "yashren", "mqtt"));
-            await client.SubscribeAsync("test", MqttQualityOfService.AtMostOnce);
-/*
- *          client.MessageStream.Subscribe(msg =>
-            {
-                //All the messages from the Broker to any subscribed topic will get here
-                //The MessageStream is an Rx Observable, so you can filter the messages by topic with Linq to Rx
-                //The message object has Topic and Payload properties. The Payload is a byte[] that you need to deserialize 
-                //depending on the type of the message
-                Console.WriteLine($"Message received in topic {msg.Topic}");
-            });
-            */
-            var message = new MqttApplicationMessage("test", Encoding.UTF8.GetBytes("Test String Message 123456"));
-            await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
-            await client.DisconnectAsync();
+
+            /*
+             *          client.MessageStream.Subscribe(msg =>
+                        {
+                            //All the messages from the Broker to any subscribed topic will get here
+                            //The MessageStream is an Rx Observable, so you can filter the messages by topic with Linq to Rx
+                            //The message object has Topic and Payload properties. The Payload is a byte[] that you need to deserialize 
+                            //depending on the type of the message
+                            Console.WriteLine($"Message received in topic {msg.Topic}");
+                        });
+
+                        var message = new MqttApplicationMessage("TrackMe", Encoding.UTF8.GetBytes("Testing string from c# xamarin"));
+                        await client.PublishAsync(message, MqttQualityOfService.AtLeastOnce);
+                        */
         }
 
         void InitializeLocationManager()
@@ -135,6 +141,7 @@ namespace TrackMe
         protected override void OnPause()
         {
             base.OnPause();
+            client.DisconnectAsync();
             _locationManager.RemoveUpdates(this);
         }
     }
